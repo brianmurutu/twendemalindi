@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatMoney } from "@/lib/utils";
+import NewsletterForm from "@/components/NewsletterForm";
 
 // Static premium mock data to populate the platform beautifully out of the box
 const FEATURED_GUIDES = [
@@ -236,6 +237,13 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Newsletter Signup */}
+      <section className="bg-sand-light py-16 border-t border-ocean/5">
+        <div className="mx-auto max-w-6xl px-6">
+          <NewsletterForm />
         </div>
       </section>
 

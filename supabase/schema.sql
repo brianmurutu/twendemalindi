@@ -138,3 +138,26 @@ from groups g
 left join contributions c on c.group_id = g.id
 left join group_members gm on gm.group_id = g.id
 group by g.id;
+
+-- ============================================================
+-- NEWSLETTER SUBSCRIBERS
+-- ============================================================
+create table if not exists newsletter_subscribers (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  subscribed_at timestamptz not null default now(),
+  status text not null default 'active' check (status in ('active', 'unsubscribed'))
+);
+
+alter table newsletter_subscribers enable row level security;
+
+create policy "Anyone can insert a subscription"
+  on newsletter_subscribers for insert with check (true);
+
+create policy "Subscribers only viewable by admins"
+  on newsletter_subscribers for select using (
+    exists (
+      select 1 from profiles p where p.id = auth.uid() and p.role = 'admin'
+    )
+  );
+
